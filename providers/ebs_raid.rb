@@ -325,12 +325,15 @@ def create_raid_disks(mount_point, mount_point_owner, mount_point_group, mount_p
   Chef::Log.debug("target raid device is #{raid_dev}")
 
   devices = {}
+  last_used_path = find_free_volume_device_prefix.prev
+  disk_dev_path = last_used_path
 
   # For each volume add information to the mount metadata
   (1..num_disks).each do |i|
-    disk_dev_path = find_free_volume_device_prefix
+    
+    disk_dev_path = disk_dev_path.next
     Chef::Log.debug("vol device prefix is #{disk_dev_path}")
-
+    
     Chef::Log.info "Snapshot array is #{snapshots[i - 1]}"
     creds = aws_creds # cannot be invoked inside the block
     aws_ebs_volume disk_dev_path do
