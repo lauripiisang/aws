@@ -45,8 +45,8 @@ private
 # AWS's volume attachment interface assumes that we're using
 # sdX style device names.  The ones we actually get will be xvdX
 def find_free_volume_device_prefix
-  # Specific to ubuntu 11./12.
-  vol_dev = 'sdh'
+  # Specific to AMILinux
+  vol_dev = 'sda'
 
   begin
     vol_dev = vol_dev.next
