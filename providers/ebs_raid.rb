@@ -46,11 +46,11 @@ private
 # sdX style device names.  The ones we actually get will be xvdX
 def find_free_volume_device_prefix
   # Specific to AMILinux
-  vol_dev = 'sda'
+  vol_dev = 'xvda'
 
   begin
     vol_dev = vol_dev.next
-    base_device = "/dev/#{vol_dev}1"
+    base_device = "/dev/#{vol_dev}"
     Chef::Log.info("dev pre trim #{base_device}")
   end while ::File.exist?(base_device)
 
@@ -321,9 +321,6 @@ def create_raid_disks(mount_point, mount_point_owner, mount_point_group, mount_p
 
   creating_from_snapshot = !(snapshots.nil? || snapshots.size == 0)
 
-  disk_dev = find_free_volume_device_prefix
-  Chef::Log.debug("vol device prefix is #{disk_dev}")
-
   raid_dev = find_free_md_device_name
   Chef::Log.debug("target raid device is #{raid_dev}")
 
@@ -331,7 +328,8 @@ def create_raid_disks(mount_point, mount_point_owner, mount_point_group, mount_p
 
   # For each volume add information to the mount metadata
   (1..num_disks).each do |i|
-    disk_dev_path = "#{disk_dev}#{i}"
+    disk_dev_path = find_free_volume_device_prefix
+    Chef::Log.debug("vol device prefix is #{disk_dev_path}")
 
     Chef::Log.info "Snapshot array is #{snapshots[i - 1]}"
     creds = aws_creds # cannot be invoked inside the block
