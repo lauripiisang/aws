@@ -1,3 +1,7 @@
+v2.7.3 (2015-07-20)
+-------------------
+Replaced ubuntu-specific disk prefix `sdh` with the more common `sda`
+
 v2.7.2 (2015-06-29)
 -------------------
 - [#124][] Retain compatibility with Chef 11, [@dhui][]
