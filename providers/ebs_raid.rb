@@ -44,17 +44,18 @@ private
 
 # AWS's volume attachment interface assumes that we're using
 # sdX style device names.  The ones we actually get will be xvdX
-def find_free_volume_device_prefix
+def find_last_used_volume_device_prefix
   # Specific to AMILinux
   vol_dev = 'xvda'
 
   begin
+    used_vol_dev = vol_dev
     vol_dev = vol_dev.next
     base_device = "/dev/#{vol_dev}"
     Chef::Log.info("dev pre trim #{base_device}")
   end while ::File.exist?(base_device)
 
-  vol_dev
+  used_vol_dev
 end
 
 def find_free_md_device_name
@@ -325,7 +326,7 @@ def create_raid_disks(mount_point, mount_point_owner, mount_point_group, mount_p
   Chef::Log.debug("target raid device is #{raid_dev}")
 
   devices = {}
-  last_used_path = find_free_volume_device_prefix.prev
+  last_used_path = find_last_used_volume_device_prefix
   disk_dev_path = last_used_path
 
   # For each volume add information to the mount metadata
