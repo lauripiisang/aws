@@ -132,7 +132,7 @@ end
 def update_initramfs
   execute 'updating initramfs' do
     Chef::Log.debug('updating initramfs to ensure RAID config persists reboots')
-    command 'update-initramfs -u'
+    command 'cp /boot/initramfs-$(uname -r).img /boot/initramfs-$(uname -r).img.$(date +%s).bak && dracut -f'
   end
 end
 
