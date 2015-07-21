@@ -1,3 +1,11 @@
+v2.7.5 (2015-07-21)
+-------------------
+`update-initramfs` refactored to `dracut -f`
+
+v2.7.4 (2015-07-20)
+-------------------
+Bugfixes
+
 v2.7.3 (2015-07-20)
 -------------------
 Replaced ubuntu-specific disk prefix `sdh` with the more common `sda`
